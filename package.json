@@ -1,7 +1,7 @@
 {
-  "name": "crypto-store",
+  "name": "findmedicare",
   "version": "1.0.0",
-  "description": "MERN+GRAPHQL",
+  "description": "REACT-NATIVE-EXPO+GRAPHQL",
   "main": "server.js",
   "scripts": {
     "server": "nodemon server.js",
