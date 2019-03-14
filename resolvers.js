@@ -32,10 +32,6 @@ exports.resolvers = {
   Mutation: {
     //User Mutations
     signinUser: async (root, { email, password }, { User }) => {
-      // if (password !== passwordConfirmation) {
-      //   throw new Error("Password Confirmation Failed");
-      // }
-
       const user = await User.findOne({ email });
       // console.log(user);
       if (!user) {

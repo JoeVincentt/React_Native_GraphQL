@@ -19,25 +19,6 @@ const UserSchema = new Schema({
   joinDate: {
     type: Date,
     default: Date.now
-  },
-  favorites: {
-    type: [Schema.Types.ObjectId],
-    ref: "Product"
-  },
-  cart: {
-    type: [Schema.Types.ObjectId],
-    ref: "Order",
-    autopopulate: true
-  },
-  cartTotal: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  wallet: {
-    type: Number,
-    required: true,
-    default: 0
   }
 });
 
