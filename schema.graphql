@@ -1,52 +1,13 @@
-type Product {
-  _id: ID!
-  name: String!
-  imageUrl: String!
-  category: String!
-  description: String!
-  createdDate: String
-  likes: Int
-  username: String!
-  price: Int!
-}
-
 type User {
   _id: ID!
   username: String!
   password: String!
   email: String!
   joinDate: String
-  favorites: [Product]
-  cart: [Order]
-  cartTotal: Float!
-  wallet: Float!
-}
-
-type Order {
-  _id: ID!
-  product: [Product]
-  quantity: Int!
-  user: [User]
-  status: String
-  createdAt: String
-  updatedAt: String
 }
 
 type Query {
-  getAllProducts: [Product]
-  getProductsByCategory(category: String!): [Product]
-  getProductsByPrice(minPrice: Float, maxPrice: Float): [Product]
-  getProduct(_id: ID!): Product
-  searchProduct(searchTerm: String): [Product]
-
-  getCurrentUser: User
-  getUserProducts(username: String!): [Product]
-  getUser(_id: ID!): User
-
-  getAllOrders: [Order]
-  getOrder(_id: ID!): Order
-  getUserOrders(userId: ID!): [Order]
-  getSellerProductsOrders(prodId: ID!): [Order]
+  getCurrentUser: [User]
 }
 
 type Token {
@@ -54,42 +15,6 @@ type Token {
 }
 
 type Mutation {
-  # User Wallet Mutations
-  getCoins(userId: ID!, amount: Float!): User
-
-  # Checkout Mutations
-  wholeCartCheckout(userId: ID!): User
-
-  # Order Mutations
-  createOrder(prodId: ID!, userId: ID!, quantity: Int!): Order
-  deleteOrder(userId: ID!, orderId: ID!): Order
-  updateOrderQuantity(orderId: ID!, quantity: Int!): Order
-
-  # Product Mutations
-  addProduct(
-    name: String!
-    imageUrl: String!
-    description: String!
-    category: String!
-    username: String!
-    price: Int!
-  ): Product
-
-  deleteUserProduct(_id: ID): Product
-
-  updateUserProduct(
-    _id: ID!
-    name: String!
-    imageUrl: String!
-    description: String!
-    category: String!
-    price: Int!
-  ): Product
-
-  likeProduct(_id: ID!, username: String!): Product
-
-  unlikeProduct(_id: ID!, username: String!): Product
-
   # User Mutations
   signinUser(email: String!, password: String!): Token
 

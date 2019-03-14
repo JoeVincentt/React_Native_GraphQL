@@ -12,7 +12,7 @@ import { SecureStore } from "expo";
 import { Button, ThemeProvider, Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Mutation } from "react-apollo";
-import { SIGNUP_USER } from "../queries/index";
+import { SIGNUP_USER } from "../../queries/index";
 
 const initialState = {
   username: "",

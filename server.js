@@ -45,8 +45,6 @@ const server = new ApolloServer({
   resolvers,
   context: ({ req }) => ({
     User,
-    Product,
-    Order,
     currentUser: req.currentUser
   })
 });
