@@ -13,13 +13,14 @@ import { Button, ThemeProvider, Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Mutation } from "react-apollo";
 import { SIGNIN_USER } from "../../queries/index";
+import withSession from "../../withSession";
 
 const initialState = {
   email: "",
   password: ""
 };
 
-export default class SignInScreen extends React.Component {
+class SignInScreen extends React.Component {
   // static navigationOptions = {
   //   header: null
   // };
@@ -32,6 +33,8 @@ export default class SignInScreen extends React.Component {
       const token = await data.signinUser.token;
       if (token !== null) {
         await SecureStore.setItemAsync("token", token);
+        await this.props.refetch();
+        this.props.navigation.navigate("Main");
       } else {
         console.log("No Token Found");
       }
@@ -79,3 +82,5 @@ export default class SignInScreen extends React.Component {
     );
   }
 }
+
+export default withSession(SignInScreen);

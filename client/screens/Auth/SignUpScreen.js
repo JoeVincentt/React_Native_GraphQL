@@ -13,6 +13,7 @@ import { Button, ThemeProvider, Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Mutation } from "react-apollo";
 import { SIGNUP_USER } from "../../queries/index";
+import withSession from "../../withSession";
 
 const initialState = {
   username: "",
@@ -21,7 +22,7 @@ const initialState = {
   passwordConfirmation: ""
 };
 
-export default class SignUpScreen extends React.Component {
+class SignUpScreen extends React.Component {
   // static navigationOptions = {
   //   header: null
   // };
@@ -34,6 +35,8 @@ export default class SignUpScreen extends React.Component {
       const token = await data.signupUser.token;
       if (token !== null) {
         await SecureStore.setItemAsync("token", token);
+        await this.props.refetch();
+        this.props.navigation.navigate("Main");
       } else {
         console.log("No Token Found");
       }
@@ -97,3 +100,5 @@ export default class SignUpScreen extends React.Component {
     );
   }
 }
+
+export default withSession(SignUpScreen);

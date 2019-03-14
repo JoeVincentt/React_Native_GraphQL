@@ -11,8 +11,9 @@ import {
 import { SecureStore } from "expo";
 import { Button, ThemeProvider, Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Mutation } from "react-apollo";
-import { SIGNUP_USER } from "../queries/index";
+import { Mutation, Query } from "react-apollo";
+import { SIGNUP_USER, GET_CURRENT_USER } from "../queries/index";
+import withSession from "../withSession";
 
 const initialState = {
   username: "",
@@ -21,7 +22,7 @@ const initialState = {
   passwordConfirmation: ""
 };
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
@@ -42,7 +43,20 @@ export default class HomeScreen extends React.Component {
     }
   };
 
+  signOut = async () => {
+    try {
+      await SecureStore.deleteItemAsync("token");
+      console.log("ls cleaned");
+      await this.props.refetch();
+      this.props.navigation.navigate("Auth");
+    } catch (error) {
+      console.log("something went wrong when signout");
+      console.log(error);
+    }
+  };
+
   render() {
+    console.log(JSON.stringify(this.props.session));
     const { username, password, email, passwordConfirmation } = this.state;
     return (
       <Mutation
@@ -85,9 +99,30 @@ export default class HomeScreen extends React.Component {
                 />
                 <Button
                   raised
-                  title="Solid Button"
+                  title="SignUp"
                   type="solid"
                   onPress={() => this.handleSubmit(signupUser)}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                {/* <Query query={GET_CURRENT_USER}>
+                  {({ data, loading, refetch }) => {
+                    console.log(JSON.stringify(data));
+                    if (loading) return <Text>didnt work</Text>;
+                    return <Text>Got Data</Text>;
+                  }}
+                </Query> */}
+                <Button
+                  raised
+                  title="SignOut"
+                  type="solid"
+                  onPress={() => this.signOut()}
                 />
               </View>
             </ThemeProvider>
@@ -97,3 +132,5 @@ export default class HomeScreen extends React.Component {
     );
   }
 }
+
+export default withSession(HomeScreen);

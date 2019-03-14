@@ -7,7 +7,7 @@ type User {
 }
 
 type Query {
-  getCurrentUser: [User]
+  getCurrentUser: User
 }
 
 type Token {

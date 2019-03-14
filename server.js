@@ -19,7 +19,7 @@ const path = "/graphql";
 
 //Use MIDDLEWARE
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "http://localhost:19001",
   credentials: true
 };
 app.use(path, cors(corsOptions));

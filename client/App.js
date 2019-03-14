@@ -5,8 +5,30 @@ import AppNavigator from "./navigation/AppNavigator";
 import { ApolloProvider } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import { ThemeProvider } from "react-native-elements";
+import { SecureStore } from "expo";
 
-const client = new ApolloClient({ uri: "http://localhost:4000/graphql" });
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql",
+  fetchOptions: {
+    credentials: "include"
+  },
+  request: async operation => {
+    const token = await SecureStore.getItemAsync("token");
+    operation.setContext({
+      headers: {
+        authorization: token ? token : null
+      }
+    });
+  },
+  onError: ({ networkError }) => {
+    if (networkError) {
+      // console.log("Network Error", networkError);
+      // if(networkError.statusCode === 401){
+      //   localStorage.removeItem('token')
+      // }
+    }
+  }
+});
 
 export default class App extends React.Component {
   state = {
