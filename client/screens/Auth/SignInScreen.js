@@ -12,26 +12,24 @@ import { SecureStore } from "expo";
 import { Button, ThemeProvider, Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Mutation } from "react-apollo";
-import { SIGNUP_USER } from "../../queries/index";
+import { SIGNIN_USER } from "../../queries/index";
 
 const initialState = {
-  username: "",
   email: "",
-  password: "",
-  passwordConfirmation: ""
+  password: ""
 };
 
-export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null
-  };
+export default class SignInScreen extends React.Component {
+  // static navigationOptions = {
+  //   header: null
+  // };
 
   state = { ...initialState };
 
-  handleSubmit = async signupUser => {
+  handleSubmit = async signinUser => {
     try {
-      const { data } = await signupUser();
-      const token = await data.signupUser.token;
+      const { data } = await signinUser();
+      const token = await data.signinUser.token;
       if (token !== null) {
         await SecureStore.setItemAsync("token", token);
       } else {
@@ -43,13 +41,10 @@ export default class HomeScreen extends React.Component {
   };
 
   render() {
-    const { username, password, email, passwordConfirmation } = this.state;
+    const { password, email } = this.state;
     return (
-      <Mutation
-        mutation={SIGNUP_USER}
-        variables={{ username, email, password, passwordConfirmation }}
-      >
-        {(signupUser, { data, loading, error }) => {
+      <Mutation mutation={SIGNIN_USER} variables={{ email, password }}>
+        {(signinUser, { data, loading, error }) => {
           return (
             <ThemeProvider>
               <View
@@ -59,11 +54,6 @@ export default class HomeScreen extends React.Component {
                   justifyContent: "center"
                 }}
               >
-                <Input
-                  placeholder="USERNAME"
-                  onChangeText={username => this.setState({ username })}
-                  value={this.state.username}
-                />
                 <Input
                   placeholder="EMAIL"
                   onChangeText={email => this.setState({ email })}
@@ -75,19 +65,11 @@ export default class HomeScreen extends React.Component {
                   onChangeText={password => this.setState({ password })}
                   value={this.state.password}
                 />
-                <Input
-                  placeholder="PASSWORD CONFIRMATION"
-                  secureTextEntry={true}
-                  onChangeText={passwordConfirmation =>
-                    this.setState({ passwordConfirmation })
-                  }
-                  value={this.state.passwordConfirmation}
-                />
                 <Button
                   raised
-                  title="Solid Button"
+                  title="Sign In"
                   type="solid"
-                  onPress={() => this.handleSubmit(signupUser)}
+                  onPress={() => this.handleSubmit(signinUser)}
                 />
               </View>
             </ThemeProvider>

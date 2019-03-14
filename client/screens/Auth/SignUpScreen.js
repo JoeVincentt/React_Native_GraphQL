@@ -21,10 +21,10 @@ const initialState = {
   passwordConfirmation: ""
 };
 
-export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null
-  };
+export default class SignUpScreen extends React.Component {
+  // static navigationOptions = {
+  //   header: null
+  // };
 
   state = { ...initialState };
 
@@ -85,7 +85,7 @@ export default class HomeScreen extends React.Component {
                 />
                 <Button
                   raised
-                  title="Solid Button"
+                  title="Sign Up"
                   type="solid"
                   onPress={() => this.handleSubmit(signupUser)}
                 />
