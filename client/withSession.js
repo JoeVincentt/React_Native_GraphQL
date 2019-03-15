@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Query } from "react-apollo";
 import { GET_CURRENT_USER } from "./queries/index";
 
@@ -13,9 +13,10 @@ import { GET_CURRENT_USER } from "./queries/index";
 //   );
 // };
 
-const withSession = Component => {
+const withSession = ScreenComponent => {
   // turns this.props.navigation.state.params into this.params.<x>
   return class extends Component {
+    static navigationOptions = ScreenComponent.navigationOptions;
     render() {
       return (
         <Query query={GET_CURRENT_USER}>
@@ -25,7 +26,7 @@ const withSession = Component => {
               state: { params }
             } = navigation;
             return (
-              <Component
+              <ScreenComponent
                 {...this.props}
                 {...params}
                 refetch={refetch}
