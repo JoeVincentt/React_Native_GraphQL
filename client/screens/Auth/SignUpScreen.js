@@ -13,7 +13,6 @@ import { Button, ThemeProvider, Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Mutation } from "react-apollo";
 import { SIGNUP_USER } from "../../queries/index";
-import withSession from "../../withSession";
 
 const initialState = {
   username: "",
@@ -101,4 +100,4 @@ class SignUpScreen extends React.Component {
   }
 }
 
-export default withSession(SignUpScreen);
+export default SignUpScreen;

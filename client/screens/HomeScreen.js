@@ -8,129 +8,113 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Footer,
+  FooterTab,
+  Left,
+  Right,
+  Body
+} from "native-base";
+import _ from "lodash";
 import { SecureStore } from "expo";
 import { Button, ThemeProvider, Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Mutation, Query } from "react-apollo";
-import { SIGNUP_USER, GET_CURRENT_USER } from "../queries/index";
-import withSession from "../withSession";
+import { Mutation } from "react-apollo";
+import { Constants, Location, Permissions } from "expo";
 
-const initialState = {
-  username: "",
-  email: "",
-  password: "",
-  passwordConfirmation: ""
-};
+import { SIGNUP_USER } from "../queries/index";
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
 
-  state = { ...initialState };
+  state = {
+    location: null,
+    errorMessage: null
+  };
 
-  handleSubmit = async signupUser => {
-    try {
-      const { data } = await signupUser();
-      const token = await data.signupUser.token;
-      if (token !== null) {
-        await SecureStore.setItemAsync("token", token);
-      } else {
-        console.log("No Token Found");
-      }
-    } catch (error) {
-      console.log(error);
+  componentWillMount() {
+    if (Platform.OS === "android" && !Constants.isDevice) {
+      this.setState({
+        errorMessage:
+          "Oops, this will not work on Sketch in an Android emulator. Try it on your device!"
+      });
+    } else {
+      this._getLocationAsync();
     }
+  }
+
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== "granted") {
+      this.setState({
+        errorMessage: "Permission to access location was denied"
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location });
   };
 
   signOut = async () => {
     try {
       await SecureStore.deleteItemAsync("token");
-      console.log("ls cleaned");
       await this.props.refetch();
       this.props.navigation.navigate("Auth");
     } catch (error) {
-      console.log("something went wrong when signout");
       console.log(error);
     }
   };
 
+  fetchingData = async () => {
+    await this.props.refetch();
+  };
+
   render() {
+    let text = "Waiting..";
+    if (this.state.errorMessage) {
+      text = this.state.errorMessage;
+    } else if (this.state.location) {
+      text = JSON.stringify(this.state.location);
+    }
     console.log(JSON.stringify(this.props.session));
-    const { username, password, email, passwordConfirmation } = this.state;
+    if (_.isEmpty(this.props.session) || this.props.session === undefined) {
+      this.fetchingData();
+      return (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>Loading...</Text>
+        </View>
+      );
+    }
     return (
-      <Mutation
-        mutation={SIGNUP_USER}
-        variables={{ username, email, password, passwordConfirmation }}
-      >
-        {(signupUser, { data, loading, error }) => {
-          return (
-            <ThemeProvider>
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <Input
-                  placeholder="USERNAME"
-                  onChangeText={username => this.setState({ username })}
-                  value={this.state.username}
-                />
-                <Input
-                  placeholder="EMAIL"
-                  onChangeText={email => this.setState({ email })}
-                  value={this.state.email}
-                />
-                <Input
-                  placeholder="PASSWORD"
-                  secureTextEntry={true}
-                  onChangeText={password => this.setState({ password })}
-                  value={this.state.password}
-                />
-                <Input
-                  placeholder="PASSWORD CONFIRMATION"
-                  secureTextEntry={true}
-                  onChangeText={passwordConfirmation =>
-                    this.setState({ passwordConfirmation })
-                  }
-                  value={this.state.passwordConfirmation}
-                />
-                <Button
-                  raised
-                  title="SignUp"
-                  type="solid"
-                  onPress={() => this.handleSubmit(signupUser)}
-                />
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                {/* <Query query={GET_CURRENT_USER}>
-                  {({ data, loading, refetch }) => {
-                    console.log(JSON.stringify(data));
-                    if (loading) return <Text>didnt work</Text>;
-                    return <Text>Got Data</Text>;
-                  }}
-                </Query> */}
-                <Button
-                  raised
-                  title="SignOut"
-                  type="solid"
-                  onPress={() => this.signOut()}
-                />
-              </View>
-            </ThemeProvider>
-          );
-        }}
-      </Mutation>
+      <Container>
+        <Header>
+          <Left />
+          <Body>
+            <Title>Header</Title>
+          </Body>
+          <Right />
+        </Header>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text>{text}</Text>
+            <View style={{ margin: 20 }}>
+              <Button title="signout" onPress={() => this.signOut()} />
+            </View>
+          </View>
+        </View>
+      </Container>
     );
   }
 }
 
-export default withSession(HomeScreen);
+export default HomeScreen;

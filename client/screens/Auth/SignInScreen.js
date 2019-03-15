@@ -13,7 +13,6 @@ import { Button, ThemeProvider, Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Mutation } from "react-apollo";
 import { SIGNIN_USER } from "../../queries/index";
-import withSession from "../../withSession";
 
 const initialState = {
   email: "",
@@ -83,4 +82,4 @@ class SignInScreen extends React.Component {
   }
 }
 
-export default withSession(SignInScreen);
+export default SignInScreen;

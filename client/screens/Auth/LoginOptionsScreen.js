@@ -11,9 +11,6 @@ export default class LoginOptionsScreen extends React.Component {
   async componentWillMount() {
     try {
       const token = await SecureStore.getItemAsync("token");
-      if (!token) {
-        console.log("no token in secure storage");
-      }
       if (token) {
         this.props.navigation.navigate("Main");
       }

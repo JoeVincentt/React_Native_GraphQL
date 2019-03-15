@@ -9,9 +9,10 @@ import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import withSession from "../withSession";
 
 const HomeStack = createStackNavigator({
-  Home: HomeScreen
+  Home: withSession(HomeScreen)
 });
 
 HomeStack.navigationOptions = {
@@ -29,7 +30,7 @@ HomeStack.navigationOptions = {
 };
 
 const LinksStack = createStackNavigator({
-  Links: LinksScreen
+  Links: withSession(LinksScreen)
 });
 
 LinksStack.navigationOptions = {
@@ -43,7 +44,7 @@ LinksStack.navigationOptions = {
 };
 
 const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen
+  Settings: withSession(SettingsScreen)
 });
 
 SettingsStack.navigationOptions = {

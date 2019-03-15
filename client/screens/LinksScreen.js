@@ -10,16 +10,22 @@ import {
 } from "react-native";
 
 import { MonoText } from "../components/StyledText";
+import withSession from "../withSession";
 
-export default class LinksScreen extends React.Component {
+class LinksScreen extends React.Component {
   static navigationOptions = {
     header: null
+  };
+  state = {
+    n: this.props.navigation.getParam("n")
   };
   render() {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Links</Text>
+        <Text>{this.state.n}</Text>
       </View>
     );
   }
 }
+
+export default withSession(LinksScreen);
