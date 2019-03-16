@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 var stripe = require("stripe")(process.env.STRIPE_KEY);
 var mongoose = require("mongoose");
+const uuidv4 = require("uuid/v4");
 
 const createToken = (user, secret, expiresIn) => {
   const { username, email } = user;
@@ -45,6 +46,7 @@ exports.resolvers = {
     createChat: async (root, { user1, user2 }, { Chat }) => {
       const participant = [user1, user2];
       const newChat = await new Chat({
+        chatId: uuidv4(),
         participant
       }).save();
       return newChat;
@@ -60,6 +62,7 @@ exports.resolvers = {
         return this.toString();
       };
       const newMessage = await new Message({
+        messageId: uuidv4(),
         senderId,
         recipientId,
         content,
@@ -102,6 +105,7 @@ exports.resolvers = {
       }
 
       const newUser = await new User({
+        userId: uuidv4(),
         username,
         email,
         password

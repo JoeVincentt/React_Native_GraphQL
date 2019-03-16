@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema({
+  messageId: {
+    type: String,
+    required: true,
+    unique: true
+  },
   senderId: {
     type: mongoose.ObjectId,
     required: true,

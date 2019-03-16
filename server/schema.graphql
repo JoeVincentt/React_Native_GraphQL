@@ -7,8 +7,8 @@ type User {
 }
 
 type Chat {
-  _id: ID
-  participant: [ID]
+  _id: ID!
+  participant: [String]
   createdAt: String
   updatedAt: String
 }

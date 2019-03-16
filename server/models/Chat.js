@@ -3,6 +3,11 @@ const Schema = mongoose.Schema;
 
 const ChatSchema = new Schema(
   {
+    chatId: {
+      type: String,
+      required: true,
+      unique: true
+    },
     participant: {
       type: [mongoose.ObjectId],
       required: true,
