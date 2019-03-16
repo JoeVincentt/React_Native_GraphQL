@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 var stripe = require("stripe")(process.env.STRIPE_KEY);
+var mongoose = require("mongoose");
 
 const createToken = (user, secret, expiresIn) => {
   const { username, email } = user;
@@ -17,6 +18,20 @@ const createToken = (user, secret, expiresIn) => {
 
 exports.resolvers = {
   Query: {
+    //Chat && Message
+    getChat: async (root, { userId }, { Chat, Messsage }) => {
+      // mongoose.ObjectId.get(v => v.toString());
+      console.log(userId);
+      const chat = await Chat.find({ participant: { _id: userId } });
+      console.log(chat.participant[0]);
+      return chat;
+    },
+    getChatMessage: async (root, { chatId }, { Message }) => {
+      const messages = await Message.find({
+        chatId
+      });
+      return messages;
+    },
     // User resolvers
     getCurrentUser: async (root, args, { currentUser, User }) => {
       if (!currentUser) {
@@ -30,6 +45,33 @@ exports.resolvers = {
     }
   },
   Mutation: {
+    //Chat && Message
+    createChat: async (root, { user1, user2 }, { Chat }) => {
+      const participant = [user1, user2];
+      const newChat = await new Chat({
+        participant
+      }).save();
+      return newChat;
+    },
+    createMessage: async (
+      root,
+      { senderId, recipientId, content, chatId },
+      { Chat, Message, User }
+    ) => {
+      const ObjectId = mongoose.Types.ObjectId;
+
+      ObjectId.prototype.valueOf = function() {
+        return this.toString();
+      };
+      const newMessage = await new Message({
+        senderId,
+        recipientId,
+        content,
+        chatId,
+        sentAt: Date.now()
+      }).save();
+      return newMessage;
+    },
     //User Mutations
     signinUser: async (root, { email, password }, { User }) => {
       const user = await User.findOne({ email });

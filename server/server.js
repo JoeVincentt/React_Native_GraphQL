@@ -7,6 +7,8 @@ const jwt = require("jsonwebtoken");
 
 //Mongoose Models
 const User = require("./models/User");
+const Chat = require("./models/Chat");
+const Message = require("./models/Message");
 
 //GraphQL Types And Resolvers
 const typeDefs = gql`
@@ -44,6 +46,8 @@ const server = new ApolloServer({
   resolvers,
   context: ({ req }) => ({
     User,
+    Chat,
+    Message,
     currentUser: req.currentUser
   })
 });

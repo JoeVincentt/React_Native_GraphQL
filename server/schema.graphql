@@ -6,8 +6,25 @@ type User {
   joinDate: String
 }
 
+type Chat {
+  _id: ID
+  participant: [ID]
+  createdAt: String
+  updatedAt: String
+}
+
+type Message {
+  senderId: ID!
+  recipientId: ID!
+  content: String!
+  chatId: ID!
+  sentAt: String
+}
+
 type Query {
   getCurrentUser: User
+  getChatMessage(chatId: ID!): Message
+  getChat(userId: ID!): [Chat]
 }
 
 type Token {
@@ -24,4 +41,13 @@ type Mutation {
     password: String!
     passwordConfirmation: String!
   ): Token
+
+  #Chat Mutation
+  createChat(user1: ID!, user2: ID!): Chat
+  createMessage(
+    senderId: ID!
+    recipientId: ID!
+    content: String!
+    chatId: ID!
+  ): Message
 }
