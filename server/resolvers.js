@@ -20,16 +20,12 @@ exports.resolvers = {
   Query: {
     //Chat && Message
     getChat: async (root, { userId }, { Chat, Messsage }) => {
-      // mongoose.ObjectId.get(v => v.toString());
-      console.log(userId);
       const chat = await Chat.find({ participant: { _id: userId } });
-      console.log(chat.participant[0]);
+
       return chat;
     },
     getChatMessage: async (root, { chatId }, { Message }) => {
-      const messages = await Message.find({
-        chatId
-      });
+      const messages = await Message.find({ chatId: { _id: chatId } });
       return messages;
     },
     // User resolvers

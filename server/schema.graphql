@@ -23,7 +23,7 @@ type Message {
 
 type Query {
   getCurrentUser: User
-  getChatMessage(chatId: ID!): Message
+  getChatMessage(chatId: ID!): [Message]
   getChat(userId: ID!): [Chat]
 }
 
