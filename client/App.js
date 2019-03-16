@@ -8,7 +8,7 @@ import { ThemeProvider } from "react-native-elements";
 import { SecureStore } from "expo";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
+  uri: "http://192.168.0.63:4000/graphql",
   fetchOptions: {
     credentials: "include"
   },
@@ -69,7 +69,8 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
+        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
+        Roboto_medium: require("./assets/fonts/Roboto_medium.ttf")
       })
     ]);
   };
