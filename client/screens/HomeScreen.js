@@ -76,19 +76,19 @@ class HomeScreen extends React.Component {
   };
 
   render() {
-    const { location } = this.state;
+    const { location, errorMessage } = this.state;
     const { session } = this.props;
     let text = "Waiting..";
-    if (this.state.errorMessage) {
-      text = this.state.errorMessage;
-    } else if (this.state.location) {
-      text = JSON.stringify(this.state.location);
+    if (errorMessage) {
+      text = errorMessage;
+    } else if (location) {
+      text = JSON.stringify(location);
     }
     console.log(JSON.stringify(this.props.session));
     if (
-      _.isEmpty(this.props.session) ||
-      this.props.session === undefined ||
-      this.props.session.getCurrentUser === null
+      _.isEmpty(session) ||
+      session === undefined ||
+      session.getCurrentUser === null
     ) {
       this.fetchingData();
       return (
@@ -118,8 +118,14 @@ class HomeScreen extends React.Component {
                 initialRegion={{
                   // latitude: location.latitude,
                   // longitude: location.longitude,
-                  latitude: location.coords.latitude,
-                  longitude: location.coords.longitude,
+                  latitude:
+                    location.coords.latitude !== null
+                      ? location.coords.latitude
+                      : 31.889931,
+                  longitude:
+                    location.coords.longitude !== null
+                      ? location.coords.longitude
+                      : -71.009003,
                   latitudeDelta: 0.0922,
                   longitudeDelta: 0.0421
                 }}

@@ -10,7 +10,6 @@ import {
 } from "react-native";
 
 import { MonoText } from "../components/StyledText";
-import withSession from "../withSession";
 
 class LinksScreen extends React.Component {
   static navigationOptions = {
@@ -28,4 +27,4 @@ class LinksScreen extends React.Component {
   }
 }
 
-export default withSession(LinksScreen);
+export default LinksScreen;
