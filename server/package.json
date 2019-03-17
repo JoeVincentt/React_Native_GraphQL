@@ -19,12 +19,15 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "graphql": "^14.1.1",
+    "graphql-subscriptions": "^1.0.0",
+    "http": "0.0.0",
     "jsonwebtoken": "^8.4.0",
     "merge-graphql-schemas": "^1.5.8",
     "mongoose": "^5.4.19",
     "mongoose-autopopulate": "^0.9.1",
     "mongoose-timezone": "^1.1.0",
     "stripe": "^6.23.1",
+    "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^3.3.2"
   }
 }

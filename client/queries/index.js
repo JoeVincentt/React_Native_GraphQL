@@ -11,6 +11,17 @@ export const GET_CHAT = gql`
     }
   }
 `;
+export const MESSAGE_ADDED = gql`
+  subscription onMessageAdded($chatId: String!) {
+    messageAdded(chatId: $chatId) {
+      messageId
+      sentAt
+      content
+    }
+  }
+`;
+
+//Message subscription
 export const GET_CHAT_MESSAGE = gql`
   query($chatId: String!) {
     getChatMessage(chatId: $chatId) {

@@ -4,6 +4,9 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const { execute, subscribe } = require("graphql");
+const { createServer } = require("http");
+const { SubscriptionServer } = require("subscriptions-transport-ws");
 
 //Mongoose Models
 const User = require("./models/User");
@@ -53,6 +56,10 @@ const server = new ApolloServer({
 });
 
 server.applyMiddleware({ app, path });
+const ws = createServer(app);
+
+// Add subscription support
+server.installSubscriptionHandlers(ws);
 
 const PORT = process.env.PORT || 4000;
 
@@ -61,7 +68,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err))
   .then(() =>
-    app.listen({ port: PORT }, () =>
+    ws.listen({ port: PORT }, () =>
       console.log(
         `🚀 Server ready at http://localhost:4000${server.graphqlPath}`
       )

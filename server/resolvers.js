@@ -3,6 +3,9 @@ const bcrypt = require("bcrypt");
 var stripe = require("stripe")(process.env.STRIPE_KEY);
 var mongoose = require("mongoose");
 const uuidv4 = require("uuid/v4");
+const { PubSub, withFilter } = require("graphql-subscriptions");
+
+const pubsub = new PubSub();
 
 const createToken = (user, secret, expiresIn) => {
   const { username, email } = user;
@@ -18,6 +21,16 @@ const createToken = (user, secret, expiresIn) => {
 };
 
 exports.resolvers = {
+  // Subscription: {
+  //   messageAdded: {
+  //     subscribe: withFilter(
+  //       () => pubsub.asyncIterator("messageAdded"),
+  //       (payload, variables) => {
+  //         return payload.chatId === variables.chatId;
+  //       }
+  //     )
+  //   }
+  // },
   Query: {
     //Chat && Message
     getChat: async (root, { userId }, { Chat, Messsage }) => {
@@ -64,6 +77,12 @@ exports.resolvers = {
         chatId,
         sentAt: Date.now()
       }).save();
+
+      // pubsub.publish("messageAdded", {
+      //   messageAdded: newMessage,
+      //   chatId: chatId
+      // });
+
       return newMessage;
     },
     //User Mutations

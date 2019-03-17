@@ -12,7 +12,6 @@ export default class LoginOptionsScreen extends React.Component {
     try {
       const token = await SecureStore.getItemAsync("token");
       if (token) {
-        await this.props.refetch();
         this.props.navigation.navigate("Main");
       }
     } catch (error) {

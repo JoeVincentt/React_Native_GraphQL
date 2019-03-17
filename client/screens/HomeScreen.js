@@ -87,8 +87,8 @@ class HomeScreen extends React.Component {
     } else if (location) {
       text = JSON.stringify(location);
     }
-    console.log(JSON.stringify(this.props.session));
-    console.log(text);
+    // console.log(JSON.stringify(this.props.session));
+    // console.log(text);
     if (
       _.isEmpty(session) ||
       session === undefined ||

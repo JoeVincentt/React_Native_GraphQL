@@ -22,6 +22,10 @@ type Message {
   sentAt: String
 }
 
+type Subscription {
+  messageAdded(chatId: String!): Message
+}
+
 type Query {
   getCurrentUser: User
   getChatMessage(chatId: String!): [Message]
