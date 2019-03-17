@@ -24,6 +24,7 @@
     "react": "16.5.0",
     "react-apollo": "^2.5.2",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-autogrow-textinput": "^5.2.0",
     "react-native-debugger-open": "^0.3.18",
     "react-native-elements": "^1.1.0",
     "react-native-gifted-chat": "^0.7.2",

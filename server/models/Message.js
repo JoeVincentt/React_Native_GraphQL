@@ -3,32 +3,30 @@ const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema({
   messageId: {
-    type: String,
-    required: true,
-    unique: true
+    type: String
   },
   senderId: {
-    type: mongoose.ObjectId,
-    required: true,
-    autopopulate: true,
-    ref: "User"
+    type: String,
+    required: true
+    // type: mongoose.ObjectId,
+    // required: true,
+    // autopopulate: true,
+    // ref: "User"
   },
   recipientId: {
-    type: mongoose.ObjectId,
-    required: true,
-    autopopulate: true,
-    ref: "User"
+    type: String,
+    required: true
+    // autopopulate: true,
+    // ref: "User"
   },
   chatId: {
-    type: mongoose.ObjectId,
-    required: true,
-    autopopulate: true,
-    ref: "Chat"
+    type: String,
+    required: true
+    // autopopulate: true,
+    // ref: "Chat"
   },
-
   content: {
     type: String,
-    unique: true,
     required: true
   },
   sentAt: {
@@ -37,14 +35,14 @@ const MessageSchema = new Schema({
   }
 });
 
-MessageSchema.pre("save", function(next) {
-  mongoose.ObjectId.get(v => v.toString());
-  next();
-});
+// MessageSchema.pre("save", function(next) {
+//   mongoose.ObjectId.get(v => v.toString());
+//   next();
+// });
+// MessageSchema.plugin(require("mongoose-autopopulate"));
 
 MessageSchema.index({
   "$**": "text"
 });
-MessageSchema.plugin(require("mongoose-autopopulate"));
 
 module.exports = mongoose.model("Message", MessageSchema);

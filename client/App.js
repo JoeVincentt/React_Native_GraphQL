@@ -8,7 +8,7 @@ import { ThemeProvider } from "react-native-elements";
 import { SecureStore } from "expo";
 
 const client = new ApolloClient({
-  uri: "http://192.168.0.63:4000/graphql",
+  uri: "http://localhost:4000/graphql",
   fetchOptions: {
     credentials: "include"
   },
@@ -23,8 +23,8 @@ const client = new ApolloClient({
   onError: ({ networkError }) => {
     if (networkError) {
       console.log("Network Error", networkError);
-      // if(networkError.statusCode === 401){
-      //   localStorage.removeItem('token')
+      // if (networkError.statusCode === 400) {
+      //   SecureStore.deleteItemAsync("token");
       // }
     }
   }

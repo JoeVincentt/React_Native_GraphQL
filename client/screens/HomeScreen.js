@@ -56,9 +56,12 @@ class HomeScreen extends React.Component {
         errorMessage: "Permission to access location was denied"
       });
     }
-
-    let location = await Location.getCurrentPositionAsync({});
-    this.setState({ location });
+    try {
+      let location = await Location.getCurrentPositionAsync({});
+      this.setState({ location });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   signOut = async () => {
@@ -85,6 +88,7 @@ class HomeScreen extends React.Component {
       text = JSON.stringify(location);
     }
     console.log(JSON.stringify(this.props.session));
+    console.log(text);
     if (
       _.isEmpty(session) ||
       session === undefined ||
@@ -118,14 +122,8 @@ class HomeScreen extends React.Component {
                 initialRegion={{
                   // latitude: location.latitude,
                   // longitude: location.longitude,
-                  latitude:
-                    location.coords.latitude !== null
-                      ? location.coords.latitude
-                      : 31.889931,
-                  longitude:
-                    location.coords.longitude !== null
-                      ? location.coords.longitude
-                      : -71.009003,
+                  latitude: 31.889931,
+                  longitude: -71.009003,
                   latitudeDelta: 0.0922,
                   longitudeDelta: 0.0421
                 }}

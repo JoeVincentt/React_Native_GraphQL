@@ -1,5 +1,5 @@
 type User {
-  _id: ID!
+  userId: ID
   username: String!
   password: String!
   email: String!
@@ -7,24 +7,25 @@ type User {
 }
 
 type Chat {
-  _id: ID!
+  chatId: String
   participant: [String]
   createdAt: String
   updatedAt: String
 }
 
 type Message {
-  senderId: ID!
-  recipientId: ID!
+  messageId: String
+  senderId: String!
+  recipientId: String!
   content: String!
-  chatId: ID!
+  chatId: String!
   sentAt: String
 }
 
 type Query {
   getCurrentUser: User
-  getChatMessage(chatId: ID!): [Message]
-  getChat(userId: ID!): [Chat]
+  getChatMessage(chatId: String!): [Message]
+  getChat(userId: String!): [Chat]
 }
 
 type Token {
@@ -43,11 +44,11 @@ type Mutation {
   ): Token
 
   #Chat Mutation
-  createChat(user1: ID!, user2: ID!): Chat
+  createChat(user1Id: String!, user2Id: String!): Chat
   createMessage(
-    senderId: ID!
-    recipientId: ID!
+    senderId: String!
+    recipientId: String!
     content: String!
-    chatId: ID!
+    chatId: String!
   ): Message
 }

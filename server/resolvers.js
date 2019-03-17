@@ -21,12 +21,12 @@ exports.resolvers = {
   Query: {
     //Chat && Message
     getChat: async (root, { userId }, { Chat, Messsage }) => {
-      const chat = await Chat.find({ participant: { _id: userId } });
+      const chat = await Chat.find({ participant: userId });
 
       return chat;
     },
     getChatMessage: async (root, { chatId }, { Message }) => {
-      const messages = await Message.find({ chatId: { _id: chatId } });
+      const messages = await Message.find({ chatId });
       return messages;
     },
     // User resolvers
@@ -43,8 +43,8 @@ exports.resolvers = {
   },
   Mutation: {
     //Chat && Message
-    createChat: async (root, { user1, user2 }, { Chat }) => {
-      const participant = [user1, user2];
+    createChat: async (root, { user1Id, user2Id }, { Chat }) => {
+      const participant = [user1Id, user2Id];
       const newChat = await new Chat({
         chatId: uuidv4(),
         participant
@@ -56,11 +56,6 @@ exports.resolvers = {
       { senderId, recipientId, content, chatId },
       { Chat, Message, User }
     ) => {
-      const ObjectId = mongoose.Types.ObjectId;
-
-      ObjectId.prototype.valueOf = function() {
-        return this.toString();
-      };
       const newMessage = await new Message({
         messageId: uuidv4(),
         senderId,

@@ -5,13 +5,11 @@ const bcrypt = require("bcrypt");
 const UserSchema = new Schema({
   userId: {
     type: String,
-    required: true,
     unique: true
   },
   username: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   password: {
     type: String,
@@ -26,6 +24,8 @@ const UserSchema = new Schema({
     default: Date.now
   }
 });
+
+// UserSchema.index({ name: 1, type: -1 });
 
 UserSchema.pre("save", function(next) {
   if (!this.isModified("password")) {
