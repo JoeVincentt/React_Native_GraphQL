@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
 import { Text, View, TextInput, ScrollView, ListView } from "react-native";
 import { Query, Mutation } from "react-apollo";
-import { GET_CHAT } from "../queries/index";
+import { GET_CHAT_MESSAGE, CREATE_MESSAGE } from "../queries/index";
 import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 import InvertibleScrollView from "react-native-invertible-scroll-view";
 import ChatMessages from "../components/Chat/ChatMessages";
@@ -36,7 +36,6 @@ export default class LinksScreen extends Component {
   };
 
   render() {
-    const { userId } = this.props.session.getCurrentUser;
     return (
       <Container>
         <Header>
@@ -48,31 +47,7 @@ export default class LinksScreen extends Component {
           <Body />
           <Right />
         </Header>
-        <InvertibleScrollView
-          inverted
-          ref={ref => {
-            this.scrollView = ref;
-          }}
-          onContentSizeChange={() => {
-            this.scrollView.scrollTo({ y: 0, animated: true });
-          }}
-        >
-          <View style={{ flex: 1, justifyContent: "flex-end" }}>
-            <Query query={GET_CHAT} variables={{ userId }} pollInterval={500}>
-              {({ data, loading, refetch }) => {
-                const chats = data.getChat;
-                console.log(chats);
-                if (chats !== undefined) {
-                  return chats.map(i => {
-                    return <Text>{i.createdAt}</Text>;
-                  });
-                } else {
-                  return null;
-                }
-              }}
-            </Query>
-          </View>
-        </InvertibleScrollView>
+        <ChatMessages session={this.props.session} />
         <View
           style={{
             justifyContent: "flex-end",
@@ -80,7 +55,9 @@ export default class LinksScreen extends Component {
             alignItems: "center",
             margin: 10
           }}
-        />
+        >
+          <MessageInput session={this.props.session} />
+        </View>
       </Container>
     );
   }

@@ -7,6 +7,7 @@ import {
 
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
+import LinksScreen1 from "../screens/LinksScreen1";
 import LinksScreen from "../screens/LinksScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import withSession from "../withSession";
@@ -30,7 +31,8 @@ HomeStack.navigationOptions = {
 };
 
 const LinksStack = createStackNavigator({
-  Links: withSession(LinksScreen)
+  Links: withSession(LinksScreen),
+  Links1: withSession(LinksScreen1)
 });
 
 LinksStack.navigationOptions = {
